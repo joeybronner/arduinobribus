@@ -1,4 +1,4 @@
-## ARDUINOBRIBUS
+## ARDUINOBRIBUS 🚌
 
 *Build your own shelter display using some Arduino boards & 3D printing parts*
 
@@ -58,10 +58,10 @@ Change the **sWay** value in **arduino/arduino.ino** with the way you want to di
 
 ### Links
 
- - [GitHub - REST API for RATP](https://github.com/ferreirix/restratp)\
- - [Fiche PC3](https://www.ratp.fr/sites/default/files/fiches-horaires/busratp/pc3.pdf)\
- - [Img to logo for OLED](http://www.instructables.com/id/How-to-use-OLED-display-arduino-module/)\
- - [3D Abribus](https://www.thingiverse.com/thing:2379938)\
- - [3D OLED 0.96](https://www.thingiverse.com/thing:2176764)\
- - [3D Box Wemos + OLED](https://www.thingiverse.com/thing:2798623)\
- - [3D Standard OLED box with place for board](https://www.thingiverse.com/thing:2662079)\
+ - [GitHub - REST API for RATP](https://github.com/ferreirix/restratp)
+ - [Fiche PC3](https://www.ratp.fr/sites/default/files/fiches-horaires/busratp/pc3.pdf)
+ - [Img to logo for OLED](http://www.instructables.com/id/How-to-use-OLED-display-arduino-module/)
+ - [3D Abribus](https://www.thingiverse.com/thing:2379938)
+ - [3D OLED 0.96](https://www.thingiverse.com/thing:2176764)
+ - [3D Box Wemos + OLED](https://www.thingiverse.com/thing:2798623)
+ - [3D Standard OLED box with place for board](https://www.thingiverse.com/thing:2662079)
