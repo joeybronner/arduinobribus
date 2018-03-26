@@ -56,7 +56,14 @@ Direction object looks like:
 Change the **sWay** value in **arduino/arduino.ino** with the way you want to display.\
 *Example: "a" in my case*
 
-### Links
+### Shopping list 🗒
+
+ - [Wemos D1 Mini - 2,21€](https://fr.aliexpress.com/item/ESP8266-ESP12-ESP-12-WeMos-D1-Mini-WIFI-Dev-Kit-Development-Board-NodeMCU-Lua/32653918483.html?spm=a2g0s.9042311.0.0.p9Sauh)
+ - [OLED screen 128X64 2,05€](https://fr.aliexpress.com/item/Free-Shipping-2014-white-New-10Pcs-lot-128X64-OLED-LCD-LED-Display-Module-For-Arduino-0/32359892898.html?spm=a2g0s.9042311.0.0.hztmxX)
+
+**✅ Total: 4,26€**
+
+### Links ⚙️
 
  - [GitHub - REST API for RATP](https://github.com/ferreirix/restratp)
  - [Fiche PC3](https://www.ratp.fr/sites/default/files/fiches-horaires/busratp/pc3.pdf)
