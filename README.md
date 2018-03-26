@@ -3,7 +3,7 @@
 *Build your own shelter display using some Arduino boards & 3D printing parts*
 
 <center>
-    <a target="_blank" href="http://youtube.fr">
+    <a target="_blank" href="https://youtu.be/XMbWkRQ7IUw">
         <img src="images/prototype.png" />
     </a>
 </center>
@@ -56,7 +56,19 @@ Direction object looks like:
 Change the **sWay** value in **arduino/arduino.ino** with the way you want to display.\
 *Example: "a" in my case*
 
-### Shopping list 🗒
+### Schematics
+
+Wemos PIN | OLED PIN
+--- | ---
+5V | VDD
+GND | GND
+D5 | SCK
+D1 | DC
+D3 | RES
+D7 | SDA
+D8 | CS
+
+### Components 🗒
 
  - [Wemos D1 Mini - 2,21€](https://fr.aliexpress.com/item/ESP8266-ESP12-ESP-12-WeMos-D1-Mini-WIFI-Dev-Kit-Development-Board-NodeMCU-Lua/32653918483.html?spm=a2g0s.9042311.0.0.p9Sauh)
  - [OLED screen 128X64 2,05€](https://fr.aliexpress.com/item/Free-Shipping-2014-white-New-10Pcs-lot-128X64-OLED-LCD-LED-Display-Module-For-Arduino-0/32359892898.html?spm=a2g0s.9042311.0.0.hztmxX)
