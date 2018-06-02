@@ -27,13 +27,16 @@ BlynkTimer timer;
 // Bus data
 String sMissionId = "100100099";
 String sStationId = "PC3_1047_1074";
-String sWay = "a";
 
-String sDirection = "Champerret";
+String sDirectionA = "Pte Maillot";
+String sDirectionR = "Clignancourt";
 String sBusSHortName = "PC3";
 
-String busAfirst = "0";
-String busAsecon = "0";
+String busAfirst = "00";
+String busAsecon = "00";
+
+String busRfirst = "00";
+String busRsecon = "00";
 
 Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
@@ -57,19 +60,23 @@ void setup()   {
 
   // Setup a function to be called every second
   timer.setInterval(30000L, checkConnection);
-  timer.setInterval(20000L, ratpQuery);
+  timer.setInterval(20000L, ratpQuery("a"));
+  timer.setInterval(20000L, ratpQuery("r"));
 }
 
 void loop()
 {
   timer.run();
 
+  // -----------------------------------------
+  // ALLER -----------------------------------
+  // -----------------------------------------
   display.clearDisplay();
   display.setCursor(0,0);
   display.setTextSize(2);
   display.println(sBusSHortName);
   display.setTextSize(1);
-  display.println("Direction " + sDirection);
+  display.println("Direction " + sDirectionA);
   display.display();
   delay(3000);
 
@@ -93,9 +100,42 @@ void loop()
 
   display.display();
   delay(3000);
+
+  // -----------------------------------------
+  // RETOUR ----------------------------------
+  // -----------------------------------------
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.setTextSize(2);
+  display.println(sBusSHortName);
+  display.setTextSize(1);
+  display.println("Direction " + sDirectionR);
+  display.display();
+  delay(3000);
+
+  display.clearDisplay();
+
+  // Next bus
+  display.setCursor(0,0);
+  display.setTextSize(2);
+  display.print(busRfirst);
+  display.setCursor(30,5);
+  display.setTextSize(1);
+  display.print("minutes");
+
+  // Second next bus
+  display.setCursor(0,18);
+  display.setTextSize(2);
+  display.print(busRsecon);
+  display.setCursor(30,22);
+  display.setTextSize(1);
+  display.print("minutes");
+
+  display.display();
+  delay(3000);
 }
 
-void ratpQuery() {
+void ratpQuery(sWay) {
   http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionId + "/from/" + sStationId + "/way/" + sWay);
   int httpCode = http.GET();
 
@@ -127,27 +167,52 @@ void ratpQuery() {
         }
     }
 
-    // Extr
-    String f = bus[0];
-    busAfirst = "";
-    for (int i = 0; i < f.length(); i++) {
-        if (isNumber(f, i)) {
-          busAfirst = busAfirst + f.substring(i, i+1);
+    if (sWay == "a") {
+        // Extr
+        String f = bus[0];
+        busAfirst = "";
+        for (int i = 0; i < f.length(); i++) {
+            if (isNumber(f, i)) {
+              busAfirst = busAfirst + f.substring(i, i+1);
+            }
         }
-    }
-    if (busAfirst == "") {
-      busAfirst = "0";
-    }
-
-    String s = bus[1];
-    busAsecon = "";
-    for (int i = 0; i < s.length(); i++) {
-        if (isNumber(s, i)) {
-          busAsecon = busAsecon + s.substring(i, i+1);
+        if (busAfirst == "") {
+          busAfirst = "00";
         }
-    }
-    if (busAsecon == "") {
-      busAsecon = "0";
+    
+        String s = bus[1];
+        busAsecon = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (isNumber(s, i)) {
+              busAsecon = busAsecon + s.substring(i, i+1);
+            }
+        }
+        if (busAsecon == "") {
+          busAsecon = "00";
+        } 
+    } else if (sWay == "r") {
+        // Extr
+        String f = bus[0];
+        busRfirst = "";
+        for (int i = 0; i < f.length(); i++) {
+            if (isNumber(f, i)) {
+              busRfirst = busRfirst + f.substring(i, i+1);
+            }
+        }
+        if (busRfirst == "") {
+          busRfirst = "00";
+        }
+    
+        String s = bus[1];
+        busRsecon = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (isNumber(s, i)) {
+              busRsecon = busRsecon + s.substring(i, i+1);
+            }
+        }
+        if (busRsecon == "") {
+          busRsecon = "00";
+        }
     }
 
   }
