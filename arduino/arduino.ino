@@ -60,8 +60,8 @@ void setup()   {
 
   // Setup a function to be called every second
   timer.setInterval(30000L, checkConnection);
-  timer.setInterval(20000L, ratpQuery("a"));
-  timer.setInterval(20000L, ratpQuery("r"));
+  timer.setInterval(20000L, ratpQueryAller);
+  timer.setInterval(20000L, ratpQueryRetour);
 }
 
 void loop()
@@ -135,8 +135,8 @@ void loop()
   delay(3000);
 }
 
-void ratpQuery(sWay) {
-  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionId + "/from/" + sStationId + "/way/" + sWay);
+void ratpQueryAller() {
+  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionId + "/from/" + sStationId + "/way/a");
   int httpCode = http.GET();
 
   // Check the returning code
@@ -167,52 +167,87 @@ void ratpQuery(sWay) {
         }
     }
 
-    if (sWay == "a") {
-        // Extr
-        String f = bus[0];
-        busAfirst = "";
-        for (int i = 0; i < f.length(); i++) {
-            if (isNumber(f, i)) {
-              busAfirst = busAfirst + f.substring(i, i+1);
-            }
+    // Extr
+    String f = bus[0];
+    busAfirst = "";
+    for (int i = 0; i < f.length(); i++) {
+        if (isNumber(f, i)) {
+          busAfirst = busAfirst + f.substring(i, i+1);
         }
-        if (busAfirst == "") {
-          busAfirst = "00";
-        }
+    }
+    if (busAfirst == "") {
+      busAfirst = "00";
+    }
     
-        String s = bus[1];
-        busAsecon = "";
-        for (int i = 0; i < s.length(); i++) {
-            if (isNumber(s, i)) {
-              busAsecon = busAsecon + s.substring(i, i+1);
-            }
+    String s = bus[1];
+    busAsecon = "";
+    for (int i = 0; i < s.length(); i++) {
+        if (isNumber(s, i)) {
+          busAsecon = busAsecon + s.substring(i, i+1);
         }
-        if (busAsecon == "") {
-          busAsecon = "00";
-        } 
-    } else if (sWay == "r") {
-        // Extr
-        String f = bus[0];
-        busRfirst = "";
-        for (int i = 0; i < f.length(); i++) {
-            if (isNumber(f, i)) {
-              busRfirst = busRfirst + f.substring(i, i+1);
-            }
+    }
+    if (busAsecon == "") {
+      busAsecon = "00";
+    }
+
+  }
+
+  http.end();
+}
+
+void ratpQueryRetour() {
+  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionId + "/from/" + sStationId + "/way/r");
+  int httpCode = http.GET();
+
+  // Check the returning code
+  if (httpCode > 0) {
+    String payload = http.getString();
+    Serial.println(payload);
+
+    const int numberOfBus = 2;
+    String bus[numberOfBus];
+    int counter = 0;
+    int lastIndex = 0;
+
+    for (int i = 0; i < payload.length(); i++) {
+        // Loop through each character and check if it's a comma
+        if (payload.substring(i, i+1) == ",") {
+          // Grab the piece from the last index up to the current position and store it
+          bus[counter] = payload.substring(lastIndex, i);
+          // Update the last position and add 1, so it starts from the next character
+          lastIndex = i + 1;
+          // Increase the position in the array that we store into
+          counter++;
         }
-        if (busRfirst == "") {
-          busRfirst = "00";
+
+        // If we're at the end of the string (no more commas to stop us)
+        if (i == payload.length() - 1) {
+          // Grab the last part of the string from the lastIndex to the end
+          bus[counter] = payload.substring(lastIndex, i);
         }
+    }
     
-        String s = bus[1];
-        busRsecon = "";
-        for (int i = 0; i < s.length(); i++) {
-            if (isNumber(s, i)) {
-              busRsecon = busRsecon + s.substring(i, i+1);
-            }
+    // Extr
+    String f = bus[0];
+    busRfirst = "";
+    for (int i = 0; i < f.length(); i++) {
+        if (isNumber(f, i)) {
+          busRfirst = busRfirst + f.substring(i, i+1);
         }
-        if (busRsecon == "") {
-          busRsecon = "00";
+    }
+    if (busRfirst == "") {
+      busRfirst = "00";
+    }
+    
+    String s = bus[1];
+    busRsecon = "";
+    for (int i = 0; i < s.length(); i++) {
+        if (isNumber(s, i)) {
+          busRsecon = busRsecon + s.substring(i, i+1);
         }
+    }
+    if (busRsecon == "") {
+      busRsecon = "00";
     }
 
   }
