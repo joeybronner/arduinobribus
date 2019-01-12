@@ -16,8 +16,8 @@
 #define OLED_RESET  D3 //Connect to RES on OLED
 
 // WiFi
-const char* KNOWN_SSID[] = {"YOUR_SSID"};
-const char* KNOWN_PASSWORD[] = {"YOUR_PASSWORD"};
+const char* KNOWN_SSID[] = {"SFR-97f0", "iPhone de Joey Bronner"};
+const char* KNOWN_PASSWORD[] = {"Q54CH9NNNKU4A", "joeyjoey"};
 const int   KNOWN_SSID_COUNT = sizeof(KNOWN_SSID) / sizeof(KNOWN_SSID[0]);
 HTTPClient http;
 
@@ -25,18 +25,22 @@ HTTPClient http;
 BlynkTimer timer;
 
 // Bus data
-String sMissionId = "100100099";
-String sStationId = "PC3_1047_1074";
+String sMissionBusId = "100100098";
+String sStationBusId = "PC_1576";
+String sBusSHortName = "PC";
+String sDirectionBus = "Pont de Garigliano";
 
-String sDirectionA = "Pte Maillot";
-String sDirectionR = "Clignancourt";
-String sBusSHortName = "PC3";
+// Tram data
+String sMissionTramId = "100112003";
+String sStationTramId = "T3b_428";
+String sTramSHortName = "T3b";
+String sDirectionTram = "Pte de Vincennes";
 
-String busAfirst = "00";
-String busAsecon = "00";
+String busFirst = "00";
+String busSecon = "00";
 
-String busRfirst = "00";
-String busRsecon = "00";
+String tramFirst = "00";
+String tramSecon = "00";
 
 Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
@@ -76,7 +80,7 @@ void loop()
   display.setTextSize(2);
   display.println(sBusSHortName);
   display.setTextSize(1);
-  display.println("Direction " + sDirectionA);
+  display.println("Direction " + sDirectionBus);
   display.display();
   delay(3000);
 
@@ -85,7 +89,7 @@ void loop()
   // Next bus
   display.setCursor(0,0);
   display.setTextSize(2);
-  display.print(busAfirst);
+  display.print(busFirst);
   display.setCursor(30,5);
   display.setTextSize(1);
   display.print("minutes");
@@ -93,7 +97,7 @@ void loop()
   // Second next bus
   display.setCursor(0,18);
   display.setTextSize(2);
-  display.print(busAsecon);
+  display.print(busSecon);
   display.setCursor(30,22);
   display.setTextSize(1);
   display.print("minutes");
@@ -107,9 +111,9 @@ void loop()
   display.clearDisplay();
   display.setCursor(0,0);
   display.setTextSize(2);
-  display.println(sBusSHortName);
+  display.println(sTramSHortName);
   display.setTextSize(1);
-  display.println("Direction " + sDirectionR);
+  display.println("Direction " + sDirectionTram);
   display.display();
   delay(3000);
 
@@ -118,7 +122,7 @@ void loop()
   // Next bus
   display.setCursor(0,0);
   display.setTextSize(2);
-  display.print(busRfirst);
+  display.print(tramFirst);
   display.setCursor(30,5);
   display.setTextSize(1);
   display.print("minutes");
@@ -126,7 +130,7 @@ void loop()
   // Second next bus
   display.setCursor(0,18);
   display.setTextSize(2);
-  display.print(busRsecon);
+  display.print(tramSecon);
   display.setCursor(30,22);
   display.setTextSize(1);
   display.print("minutes");
@@ -136,7 +140,7 @@ void loop()
 }
 
 void ratpQueryAller() {
-  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionId + "/from/" + sStationId + "/way/a");
+  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionBusId + "/from/" + sStationBusId + "/way/r");
   int httpCode = http.GET();
 
   // Check the returning code
@@ -169,25 +173,25 @@ void ratpQueryAller() {
 
     // Extr
     String f = bus[0];
-    busAfirst = "";
+    busFirst = "";
     for (int i = 0; i < f.length(); i++) {
         if (isNumber(f, i)) {
-          busAfirst = busAfirst + f.substring(i, i+1);
+          busFirst = busFirst + f.substring(i, i+1);
         }
     }
-    if (busAfirst == "") {
-      busAfirst = "00";
+    if (busFirst == "") {
+      busFirst = "00";
     }
     
     String s = bus[1];
-    busAsecon = "";
+    busSecon = "";
     for (int i = 0; i < s.length(); i++) {
         if (isNumber(s, i)) {
-          busAsecon = busAsecon + s.substring(i, i+1);
+          busSecon = busSecon + s.substring(i, i+1);
         }
     }
-    if (busAsecon == "") {
-      busAsecon = "00";
+    if (busSecon == "") {
+      busSecon = "00";
     }
 
   }
@@ -196,7 +200,7 @@ void ratpQueryAller() {
 }
 
 void ratpQueryRetour() {
-  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionId + "/from/" + sStationId + "/way/r");
+  http.begin("http://restratpws.azurewebsites.net/api/missions/" + sMissionTramId + "/from/" + sStationTramId + "/way/r");
   int httpCode = http.GET();
 
   // Check the returning code
@@ -229,25 +233,25 @@ void ratpQueryRetour() {
     
     // Extr
     String f = bus[0];
-    busRfirst = "";
+    tramFirst = "";
     for (int i = 0; i < f.length(); i++) {
         if (isNumber(f, i)) {
-          busRfirst = busRfirst + f.substring(i, i+1);
+          tramFirst = tramFirst + f.substring(i, i+1);
         }
     }
-    if (busRfirst == "") {
-      busRfirst = "00";
+    if (tramFirst == "") {
+      tramFirst = "00";
     }
     
     String s = bus[1];
-    busRsecon = "";
+    tramSecon = "";
     for (int i = 0; i < s.length(); i++) {
         if (isNumber(s, i)) {
-          busRsecon = busRsecon + s.substring(i, i+1);
+          tramSecon = tramSecon + s.substring(i, i+1);
         }
     }
-    if (busRsecon == "") {
-      busRsecon = "00";
+    if (tramSecon == "") {
+      tramSecon = "00";
     }
 
   }
